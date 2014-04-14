@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.util.Log;
+import com.example.Lectures__Library.StudentID;
 
 import java.util.ArrayList;
 
@@ -17,11 +18,18 @@ public class NsdHelper {
     private NsdManager nsdManager;
     private NsdManager.DiscoveryListener discoveryListener;
     private ArrayList<Lecture> availableLectures;
+    private StudentID studentID;
+    private NsdManager.ResolveListener resolveListener;
+    private NsdServiceInfo service;
 
     public NsdHelper(Context context) {
         nsdManager = (NsdManager) context.getSystemService(Context.NSD_SERVICE);
         availableLectures = new ArrayList<Lecture>();
         initializeDiscoveryListener();
+    }
+
+    public NsdServiceInfo getService() {
+        return service;
     }
 
     public ArrayList<Lecture> getListOfLectures() {
@@ -74,5 +82,28 @@ public class NsdHelper {
                 Log.e(TAG, "Service lost: " + serviceInfo);
             }
         };
+    }
+
+    private void initializeResolveListener() {
+        //Instantiates a new ResolveListener
+        resolveListener = new NsdManager.ResolveListener() {
+
+            @Override
+            public void onResolveFailed(NsdServiceInfo serviceInfo, int errorCode) {
+                Log.d(TAG, "Resolving lecture failed: " + errorCode);
+            }
+
+            @Override
+            public void onServiceResolved(NsdServiceInfo serviceInfo) {
+                Log.d(TAG, "Resolve succeeded. " + serviceInfo);
+
+                service = serviceInfo;
+            }
+        };
+    }
+
+    public void chooseLecture(Lecture lecture, StudentID id) {
+        studentID = id;
+        nsdManager.resolveService(lecture.getLectureInfo(), resolveListener);
     }
 }

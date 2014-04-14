@@ -13,4 +13,8 @@ public class Lecture {
     public Lecture(NsdServiceInfo serviceInfo) {
         lectureInfo = serviceInfo;
     }
+
+    public NsdServiceInfo getLectureInfo() {
+        return lectureInfo;
+    }
 }

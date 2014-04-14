@@ -1,4 +1,4 @@
-package com.example.Lectures__Student;
+package com.InstantFeedback.Student;
 
 import android.app.Activity;
 import android.net.nsd.NsdServiceInfo;

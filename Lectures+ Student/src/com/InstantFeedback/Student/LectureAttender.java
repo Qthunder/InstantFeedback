@@ -1,4 +1,4 @@
-package com.example.Lectures__Student;
+package com.InstantFeedback.Student;
 
 import java.net.InetAddress;
 

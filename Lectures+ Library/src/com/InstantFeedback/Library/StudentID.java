@@ -1,4 +1,4 @@
-package com.example.Lectures__Library;
+package com.InstantFeedback.Library
 
 /**
  * Created by Jasiek on 14/04/2014.

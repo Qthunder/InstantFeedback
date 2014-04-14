@@ -3,11 +3,12 @@ package com.InstantFeedback.Student;
 import android.app.Activity;
 import android.net.nsd.NsdServiceInfo;
 import android.os.Bundle;
-import com.example.Lectures__Library.StudentID;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
+
+import com.InstantFeedback.Library.StudentID;
 
 
 public class StudentMainActivity extends Activity {

@@ -19,6 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String COMMA = ",";
+    private static final String AUTOINCREMENT = " AUTOINCREMENT";
     private static final String PRIMARY_KEY = " INTEGER PRIMARY KEY AUTOINCREMENT";
     private static final String DROP_IF_EXISTS = "DROP TABLE IF EXISTS ";
 
@@ -35,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             + Lectures.COLUMN_NAME_LECTURE_ID + PRIMARY_KEY + COMMA
             + Lectures.COLUMN_NAME_COURSE_ID + INT_TYPE + COMMA
             + Lectures.COLUMN_NAME_LECTURE_NAME + TEXT_TYPE + COMMA
-            + Lectures.COLUMN_NAME_LECTURE_RANK + INT_TYPE + ")";
+            + Lectures.COLUMN_NAME_LECTURE_RANK + INT_TYPE + AUTOINCREMENT + ")";
 
     private static final String DROP_LECTURES = DROP_IF_EXISTS + Lectures.TABLE_NAME;
 
@@ -45,7 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             + Questions.COLUMN_NAME_LECTURE_ID + INT_TYPE + COMMA
             + Questions.COLUMN_NAME_QUESTION_TEXT + TEXT_TYPE + COMMA
             + Questions.COLUMN_NAME_QUESTION_TYPE + TEXT_TYPE + COMMA
-            + Questions.COLUMN_NAME_QUESTION_RANK + INT_TYPE + ")";
+            + Questions.COLUMN_NAME_QUESTION_RANK + INT_TYPE + AUTOINCREMENT + ")";
 
     private static final String DROP_QUESTIONS = DROP_IF_EXISTS + Questions.TABLE_NAME;
 
@@ -54,8 +55,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             + Answers.COLUMN_NAME_ANSWER_ID + PRIMARY_KEY + COMMA
             + Answers.COLUMN_NAME_QUESTION_ID + INT_TYPE + COMMA
             + Answers.COLUMN_NAME_ANSWER_TEXT + TEXT_TYPE + COMMA
-            + Answers.COLUMN_NAME_ANSWER_BOOL + TEXT_TYPE + COMMA
-            + Answers.COLUMN_NAME_ANSWER_RANK + INT_TYPE + ")";
+            + Answers.COLUMN_NAME_ANSWER_BOOL + INT_TYPE + COMMA
+            + Answers.COLUMN_NAME_ANSWER_RANK + INT_TYPE + AUTOINCREMENT + ")";
 
     private static final String DROP_ANSWERS = DROP_IF_EXISTS + Answers.TABLE_NAME;
 

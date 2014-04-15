@@ -21,7 +21,7 @@ public final class LecturerDatabaseContract {
         public static final String COLUMN_NAME_LECTURE_ID = "lecture_id";
         public static final String COLUMN_NAME_COURSE_ID = "course_id";
         public static final String COLUMN_NAME_LECTURE_NAME = "lecture_name";
-        public static final String COLUMN_NAME_LECTURE_RANK = "lecture_rank";
+        public static final String COLUMN_NAME_LECTURE_RANK = "rank";
     }
 
     public static abstract class Questions implements BaseColumns {
@@ -30,7 +30,7 @@ public final class LecturerDatabaseContract {
         public static final String COLUMN_NAME_LECTURE_ID = "lecture_id";
         public static final String COLUMN_NAME_QUESTION_TEXT = "question_text";
         public static final String COLUMN_NAME_QUESTION_TYPE = "question_type";
-        public static final String COLUMN_NAME_QUESTION_RANK = "question_rank";
+        public static final String COLUMN_NAME_QUESTION_RANK = "rank";
     }
 
     public static abstract class Answers implements BaseColumns {
@@ -39,6 +39,6 @@ public final class LecturerDatabaseContract {
         public static final String COLUMN_NAME_QUESTION_ID = "question_id";
         public static final String COLUMN_NAME_ANSWER_TEXT = "answer_text";
         public static final String COLUMN_NAME_ANSWER_BOOL = "answer_bool";
-        public static final String COLUMN_NAME_ANSWER_RANK = "answer_rank";
+        public static final String COLUMN_NAME_ANSWER_RANK = "rank";
     }
 }

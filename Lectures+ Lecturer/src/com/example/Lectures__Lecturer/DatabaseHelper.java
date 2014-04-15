@@ -19,6 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String TEXT_TYPE = " TEXT";
     private static final String INT_TYPE = " INTEGER";
     private static final String COMMA = ",";
+    private static final String NOT_NULL = " NOT NULL";
+    private static final String DEFAULT_0 = " DEFAULT 0";
     private static final String AUTOINCREMENT = " AUTOINCREMENT";
     private static final String PRIMARY_KEY = " INTEGER PRIMARY KEY AUTOINCREMENT";
     private static final String DROP_IF_EXISTS = "DROP TABLE IF EXISTS ";
@@ -26,37 +28,40 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String CREATE_COURSES =
             "CREATE TABLE " + Courses.TABLE_NAME + " ("
             + Courses.COLUMN_NAME_COURSE_ID + PRIMARY_KEY + COMMA
-            + Courses.COLUMN_NAME_COURSE + TEXT_TYPE + COMMA
-            + Courses.COLUMN_NAME_LECTURER + TEXT_TYPE + ")";
+            + Courses.COLUMN_NAME_COURSE + TEXT_TYPE + NOT_NULL + COMMA
+            + Courses.COLUMN_NAME_LECTURER + TEXT_TYPE + NOT_NULL
+            + Courses.COLUMN_NAME_NUMBER_LECTURES + INT_TYPE + DEFAULT_0 + ")";
 
     private static final String DROP_COURSES = DROP_IF_EXISTS + Courses.TABLE_NAME;
 
     private static final String CREATE_LECTURES =
             "CREATE TABLE " + Lectures.TABLE_NAME + " ("
             + Lectures.COLUMN_NAME_LECTURE_ID + PRIMARY_KEY + COMMA
-            + Lectures.COLUMN_NAME_COURSE_ID + INT_TYPE + COMMA
-            + Lectures.COLUMN_NAME_LECTURE_NAME + TEXT_TYPE + COMMA
-            + Lectures.COLUMN_NAME_LECTURE_RANK + INT_TYPE + AUTOINCREMENT + ")";
+            + Lectures.COLUMN_NAME_COURSE_ID + INT_TYPE + NOT_NULL + COMMA
+            + Lectures.COLUMN_NAME_LECTURE_NAME + TEXT_TYPE + NOT_NULL + COMMA
+            + Lectures.COLUMN_NAME_LECTURE_RANK + INT_TYPE + DEFAULT_0
+            + Lectures.COLUMN_NAME_NUMBER_QUESTIONS + INT_TYPE + DEFAULT_0 + ")";
 
     private static final String DROP_LECTURES = DROP_IF_EXISTS + Lectures.TABLE_NAME;
 
     private static final String CREATE_QUESTIONS =
             "CREATE TABLE " + Questions.TABLE_NAME + " ("
             + Questions.COLUMN_NAME_QUESTION_ID + PRIMARY_KEY + COMMA
-            + Questions.COLUMN_NAME_LECTURE_ID + INT_TYPE + COMMA
-            + Questions.COLUMN_NAME_QUESTION_TEXT + TEXT_TYPE + COMMA
-            + Questions.COLUMN_NAME_QUESTION_TYPE + TEXT_TYPE + COMMA
-            + Questions.COLUMN_NAME_QUESTION_RANK + INT_TYPE + AUTOINCREMENT + ")";
+            + Questions.COLUMN_NAME_LECTURE_ID + INT_TYPE + NOT_NULL + COMMA
+            + Questions.COLUMN_NAME_QUESTION_TEXT + TEXT_TYPE + NOT_NULL + COMMA
+            + Questions.COLUMN_NAME_QUESTION_TYPE + TEXT_TYPE + NOT_NULL + COMMA
+            + Questions.COLUMN_NAME_QUESTION_RANK + INT_TYPE + DEFAULT_0
+            + Questions.COLUMN_NAME_NUMBER_ANSWERS + INT_TYPE + DEFAULT_0 + ")";
 
     private static final String DROP_QUESTIONS = DROP_IF_EXISTS + Questions.TABLE_NAME;
 
     private static final String CREATE_ANSWERS =
             "CREATE TABLE " + Answers.TABLE_NAME + " ("
             + Answers.COLUMN_NAME_ANSWER_ID + PRIMARY_KEY + COMMA
-            + Answers.COLUMN_NAME_QUESTION_ID + INT_TYPE + COMMA
-            + Answers.COLUMN_NAME_ANSWER_TEXT + TEXT_TYPE + COMMA
-            + Answers.COLUMN_NAME_ANSWER_BOOL + INT_TYPE + COMMA
-            + Answers.COLUMN_NAME_ANSWER_RANK + INT_TYPE + AUTOINCREMENT + ")";
+            + Answers.COLUMN_NAME_QUESTION_ID + INT_TYPE + NOT_NULL + COMMA
+            + Answers.COLUMN_NAME_ANSWER_TEXT + TEXT_TYPE + NOT_NULL + COMMA
+            + Answers.COLUMN_NAME_ANSWER_BOOL + INT_TYPE + NOT_NULL + COMMA
+            + Answers.COLUMN_NAME_ANSWER_RANK + INT_TYPE + DEFAULT_0 + ")";
 
     private static final String DROP_ANSWERS = DROP_IF_EXISTS + Answers.TABLE_NAME;
 

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.Lectures__Lecturer.LecturerDatabaseContract.*;
 
 /**
+ *
  * Created by edisach on 15/04/14.
  */
 public class DatabaseManager extends Application{

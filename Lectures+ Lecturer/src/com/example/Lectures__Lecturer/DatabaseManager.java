@@ -3,6 +3,7 @@ package com.example.Lectures__Lecturer;
 import android.app.Application;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import com.example.Lectures__Lecturer.LecturerDatabaseContract.*;
 
 /**
@@ -19,7 +20,15 @@ public class DatabaseManager extends Application{
     private static final String decrementRank =
             "UPDATE ? SET rank = rank - 1 WHERE rank >= ? AND ? = ?";
 
+    private Integer getSize(String table, Integer id) {
+        String sql = "SELECT size FROM " + table + "WHERE " + table + "_id = " + id;
+        SQLiteStatement compiled = db.compileStatement(sql);
+        Integer size = (int)(long) compiled.simpleQueryForLong();
+        return size;
+    }
+
     // Courses aren't ranked, so no need to insert
+    // Create a new course
     public Integer createCourse(String name, String lecturer) {
         db = dbHelper.getWritableDatabase();
 
@@ -99,6 +108,9 @@ public class DatabaseManager extends Application{
             Object[] bindArgs = new Object[]{Answers.TABLE_NAME, Answers.COLUMN_NAME_ANSWER_RANK,
             Answers.COLUMN_NAME_QUESTION_ID, question_id};
             db.execSQL(incrementRank, bindArgs);
+        }
+        else {
+            values.put(Answers.COLUMN_NAME_ANSWER_RANK, )
         }
 
         Integer newRowId;

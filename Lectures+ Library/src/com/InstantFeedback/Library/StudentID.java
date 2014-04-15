@@ -1,4 +1,4 @@
-package com.InstantFeedback.Library
+package com.InstantFeedback.Library;
 
 /**
  * Created by Jasiek on 14/04/2014.

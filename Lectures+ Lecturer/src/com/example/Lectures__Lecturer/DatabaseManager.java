@@ -19,11 +19,12 @@ public class DatabaseManager extends Application{
     private static final String decrementRank =
             "UPDATE ? SET rank = rank - 1 WHERE rank >= ? AND ? = ?";
 
-    // gets the number of items in the
-    private long getSize (String table_name, String id, Integer test) {
-        String temp = "SELECT COUNT(*) FROM " + table_name + " WHERE " + id + " = " + test;
+    // gets the number of items in the given table with
+    private long getSize (String table_name, String id, Integer test_id) {
+        String temp = "SELECT COUNT(*) FROM " + table_name + " WHERE " + id + " = " + test_id;
         long ret;
         try {
+            //noinspection ConstantConditions
             ret = db.compileStatement(temp).simpleQueryForLong();
         }
         catch (NullPointerException e) {

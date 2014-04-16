@@ -20,8 +20,9 @@ public class DatabaseManager extends Application{
     private static final String decrementRank =
             "UPDATE ? SET rank = rank - 1 WHERE rank >= ? AND ? = ?";
 
+    // gets the number of items in the
     private long getSize (String table_name, String id, Integer test) {
-        String temp = "SELECT number FROM " + table_name + " WHERE " + id + " = " + test;
+        String temp = "SELECT COUNT(*) FROM " + table_name + " WHERE " + id + " = " + test;
         long ret;
         try {
             ret = db.compileStatement(temp).simpleQueryForLong();
@@ -67,13 +68,13 @@ public class DatabaseManager extends Application{
         return newRowId;
     }
 
-    // Add a new lecture on to the end of the course
+    // Create a new lecture at the end of the course
     public long createLecture(Integer course_id, String name) {
         long temp = getSize(Lectures.TABLE_NAME, Lectures.COLUMN_NAME_COURSE_ID, course_id);
         return insertLecture(course_id, name, temp);
     }
 
-    // Add a new question at a given rank in the lecture
+    // Insert a new question at a given rank in the lecture
     public long insertQuestion(Integer lecture_id, String text, String type, long rank){
         db = dbHelper.getWritableDatabase();
 
@@ -87,19 +88,19 @@ public class DatabaseManager extends Application{
         Questions.COLUMN_NAME_LECTURE_ID, lecture_id};
         db.execSQL(incrementRank, bindArgs);
 
-        Integer newRowId;
-        newRowId = (int)(long) db.insert(Questions.TABLE_NAME, null, values);
+        long newRowId;
+        newRowId = db.insert(Questions.TABLE_NAME, null, values);
 
         return newRowId;
     }
 
-    // Add a new question to the end of the course
-    public long addQuestion(Integer lecture_id, String text, String type){
+    // Create a new question to the end of the course
+    public long createQuestion(Integer lecture_id, String text, String type){
         long temp = getSize(Questions.TABLE_NAME, Questions.COLUMN_NAME_LECTURE_ID, lecture_id);
         return insertQuestion(lecture_id, text, type, temp);
     }
 
-    // Add a new answer to a question at a given rank
+    // Insert a new answer to a question at a given rank
     public long insertAnswer(Integer question_id, String text, Boolean truth, long rank){
         db = dbHelper.getWritableDatabase();
         Integer truthInt;
@@ -115,14 +116,14 @@ public class DatabaseManager extends Application{
         Answers.COLUMN_NAME_QUESTION_ID, question_id};
         db.execSQL(incrementRank, bindArgs);
 
-        Integer newRowId;
-        newRowId = (int)(long) db.insert(Answers.TABLE_NAME, null, values);
+        long newRowId;
+        newRowId = db.insert(Answers.TABLE_NAME, null, values);
 
         return newRowId;
     }
 
-    // Add a new answer at the end
-    public long addAnswer(Integer question_id, String text, Boolean truth) {
+    // Create a new answer at the end
+    public long createAnswer(Integer question_id, String text, Boolean truth) {
         long temp = getSize(Answers.TABLE_NAME, Answers.COLUMN_NAME_QUESTION_ID, question_id);
         return insertAnswer(question_id, text, truth, temp);
     }

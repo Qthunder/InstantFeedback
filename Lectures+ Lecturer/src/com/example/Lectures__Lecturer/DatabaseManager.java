@@ -21,15 +21,16 @@ public class DatabaseManager extends Application{
             "UPDATE ? SET rank = rank - 1 WHERE rank >= ? AND ? = ?";
 
     private long getSize (String table_name, String id, Integer test) {
-        String temp = "SELECT number FROM table_name WHERE " + id + " = " + test;
-        return db.compileStatement(temp).simpleQueryForLong();
-    }
-
-    private long getSize(String table, Integer id) {
-        String sql = "SELECT size FROM " + table + "WHERE " + table + "_id = " + id;
-        SQLiteStatement compiled = db.compileStatement(sql);
-        long size = compiled.simpleQueryForLong();
-        return size;
+        String temp = "SELECT number FROM " + table_name + " WHERE " + id + " = " + test;
+        long ret;
+        try {
+            ret = db.compileStatement(temp).simpleQueryForLong();
+        }
+        catch (NullPointerException e) {
+            System.out.print(e);
+            ret = 0;
+        }
+        return ret;
     }
 
     // Courses aren't ranked, so no need to insert

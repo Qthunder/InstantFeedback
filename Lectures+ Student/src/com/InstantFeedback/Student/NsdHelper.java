@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.util.Log;
+import com.InstantFeedback.Library.Lecture;
 import com.InstantFeedback.Library.StudentID;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 public class NsdHelper {
 
     private static final String TAG = "NsdHelper";
-    private static final String SERVICE_TYPE = "LectureBroadcast";
+    private static final String SERVICE_TYPE = "_http._tcp.";
     private NsdManager nsdManager;
     private NsdManager.DiscoveryListener discoveryListener;
     private ArrayList<Lecture> availableLectures;
@@ -69,7 +70,7 @@ public class NsdHelper {
 
             @Override
             public void onServiceFound(NsdServiceInfo serviceInfo) {
-                if (serviceInfo.getServiceName().equals(SERVICE_TYPE)) {
+                if (serviceInfo.getServiceType().equals(SERVICE_TYPE)) {
                     availableLectures.add(new Lecture(serviceInfo));
                     Log.d(TAG, "Discovered service: " + serviceInfo);
                 } else {

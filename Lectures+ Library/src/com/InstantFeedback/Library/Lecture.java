@@ -1,4 +1,4 @@
-package com.InstantFeedback.Student;
+package com.InstantFeedback.Library;
 
 import android.net.nsd.NsdServiceInfo;
 

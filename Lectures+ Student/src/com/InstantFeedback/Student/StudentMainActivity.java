@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.net.nsd.NsdServiceInfo;
 import android.os.Bundle;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.util.ArrayList;
 
+import com.InstantFeedback.Library.Lecture;
 import com.InstantFeedback.Library.StudentID;
 
 

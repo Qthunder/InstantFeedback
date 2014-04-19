@@ -30,7 +30,7 @@ public class StudentMainActivity extends Activity {
         return nsdHelper.getListOfLectures();
     }
 
-    private void joinLecture(Lecture lecture, StudentID id) {
+    private void joinLecture(Lecture lecture, StudentID id) { //caller must provide the id for this student
         nsdHelper.chooseLecture(lecture, id);
         NsdServiceInfo service = nsdHelper.getService();
 

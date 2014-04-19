@@ -5,13 +5,13 @@ import android.net.nsd.NsdManager;
 import android.net.nsd.NsdServiceInfo;
 import android.util.Log;
 
+import com.InstantFeedback.Library.Variables;
+
 /**
  * Created by Jasiek on 18/04/2014.
  */
 public class NsdHelperLecturer {
 
-    private static final String SERVICE_NAME = "LectureBroadcast";
-    private static final String SERVICE_TYPE = "_http._tcp.";
     private static final String TAG = "NadHelper";
     private NsdManager nsdManager;
     private NsdManager.RegistrationListener registrationListener;
@@ -51,9 +51,13 @@ public class NsdHelperLecturer {
     public void registerService(int port) {
         NsdServiceInfo serviceInfo = new NsdServiceInfo();
         serviceInfo.setPort(port);
-        serviceInfo.setServiceName(SERVICE_NAME);
-        serviceInfo.setServiceType(SERVICE_TYPE);
+        serviceInfo.setServiceName(Variables.SERVICE_NAME);
+        serviceInfo.setServiceType(Variables.SERVICE_TYPE);
 
         nsdManager.registerService(serviceInfo,NsdManager.PROTOCOL_DNS_SD, registrationListener);
+    }
+
+    public void endService() {
+        nsdManager.unregisterService(registrationListener);
     }
 }

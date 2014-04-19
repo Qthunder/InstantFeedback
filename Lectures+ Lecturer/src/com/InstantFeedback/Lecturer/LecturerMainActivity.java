@@ -3,6 +3,7 @@ package com.InstantFeedback.Lecturer;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import com.InstantFeedback.Library.Question;
 
 public class LecturerMainActivity extends Activity {
     private static final String TAG = "Lecturer";
@@ -27,5 +28,14 @@ public class LecturerMainActivity extends Activity {
             Log.d(TAG, "ServerSocket isn't bound.");
         }
 
+    }
+
+    void endLecture() {
+        lectureBroadcast.endBroadcast();
+        nsdHelperLecturer.endService();
+    }
+
+    public void deployQuestion(Question question) {
+        lectureBroadcast.deployQuestion(question);
     }
 }

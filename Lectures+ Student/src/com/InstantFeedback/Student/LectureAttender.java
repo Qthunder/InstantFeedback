@@ -1,6 +1,7 @@
 package com.InstantFeedback.Student;
 
 import android.util.Log;
+import com.InstantFeedback.Library.Variables.DataType;
 import com.InstantFeedback.Library.Question;
 import com.InstantFeedback.Library.Request;
 
@@ -85,12 +86,14 @@ public class LectureAttender {
             }
 
             ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+            out.writeObject(DataType.REQUEST);
             out.writeObject(request);
+
+            Log.d(TAG, "Student request sent");
+
         } catch (IOException e) {
             Log.e(TAG, "Request sending failed, IOE", e);
         }
-
-        Log.d(TAG, "Student request sent");
 
     }
 
@@ -102,8 +105,11 @@ public class LectureAttender {
             try {
                 input = new ObjectInputStream(clientSocket.getInputStream());
                 while(!Thread.currentThread().isInterrupted()) {
-                    Question question = (Question) input.readObject();
-                    //TODO deployQuestion(question)
+                    DataType dataType = (DataType) input.readObject();
+                    if(dataType == DataType.QUESTION) {
+                        Question question = (Question) input.readObject();
+                        //TODO deployQuestion(question) - inform the rest of the app about the question.
+                    }
                 }
 
             } catch (IOException e) {
@@ -112,5 +118,9 @@ public class LectureAttender {
                 Log.e(TAG, "Question listener loop failed, class not found: ", e);
             }
         }
+    }
+
+    public void answerQuestion(Question question /*, Answer answer*/) {
+        //TODO
     }
 }

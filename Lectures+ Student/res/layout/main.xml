@@ -3,6 +3,38 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-        >
+              android:weightSum="1">
+    <ImageView
+            android:layout_width="220dp"
+            android:layout_height="200dp"
+            android:id="@+id/imageView" android:src="@drawable/logo_student"
+            android:layout_gravity="center_horizontal"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/spinner_prompt"
+            android:id="@+id/textView" android:layout_marginTop="20dp" android:layout_marginLeft="20dp"
+            android:textSize="15dp"/>
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/connect_spinner"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp" android:prompt="@string/spinner_prompt"
+            />
+    <Button
+            android:layout_width="120dp"
+            android:layout_height="35dp"
+            android:text="@string/button_prompt"
+            android:id="@+id/connect_button"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/button"
+            android:textStyle="bold"
+            android:textSize="15dp"
+            android:typeface="normal"
+            android:onClick="connect" android:singleLine="true" android:layout_gravity="center_horizontal"/>
 </LinearLayout>
 

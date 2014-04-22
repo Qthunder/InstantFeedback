@@ -1,4 +1,4 @@
-package com.example.Lectures__Lecturer;
+package com.InstantFeedback.Lecturer;
 
 /**
  * Wrapper class for the database handling

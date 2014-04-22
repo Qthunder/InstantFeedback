@@ -1,9 +1,9 @@
-package com.example.Lectures__Lecturer;
+package com.InstantFeedback.Lecturer;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.example.Lectures__Lecturer.LecturerDatabaseContract.*;
+import com.InstantFeedback.Lecturer.LecturerDatabaseContract.*;
 
 /**
  * Creates and manages the database

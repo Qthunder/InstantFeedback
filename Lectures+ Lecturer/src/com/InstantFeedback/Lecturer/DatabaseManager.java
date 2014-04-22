@@ -1,9 +1,9 @@
-package com.example.Lectures__Lecturer;
+package com.InstantFeedback.Lecturer;
 
 import android.app.Application;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
-import com.example.Lectures__Lecturer.LecturerDatabaseContract.*;
+import com.InstantFeedback.Lecturer.LecturerDatabaseContract.*;
 
 /**
  *

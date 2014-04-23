@@ -48,10 +48,12 @@ public class DatabaseManager extends Application{
     class Lecture {
         private int id;
         private String name;
+        private int rank;
 
-        Lecture(int id, String name) {
+        Lecture(int id, String name, int rank) {
             this.id = id;
             this.name = name;
+            this.rank = rank;
         }
 
         // TODO -- make setName update the database
@@ -64,17 +66,22 @@ public class DatabaseManager extends Application{
         public void setName(String name) {
             this.name = name;
         }
+        public int getRank() {
+            return rank;
+        }
     }
 
     class Question {
         private int id;
         private String text;
         private String question_type;
+        private int rank;
 
-        Question(int id, String text, String question_type) {
+        Question(int id, String text, String question_type, int rank) {
             this.id = id;
             this.text = text;
             this.question_type = question_type;
+            this.rank = rank;
         }
 
         // TODO -- make setters update database
@@ -93,18 +100,23 @@ public class DatabaseManager extends Application{
         public void setQuestion_type(String question_type) {
             this.question_type = question_type;
         }
+        public int getRank() {
+            return rank;
+        }
     }
 
     class Answer {
         private int id;
         private String text;
         private Boolean truth;
+        private int rank;
 
-        Answer(int id, String text, int truth) {
+        Answer(int id, String text, int truth, int rank) {
             this.id = id;
             this.text = text;
             if (truth == 1) this.truth = true;
             else this.truth = false;
+            this.rank = rank;
         }
 
         // TODO -- make setters update database, setTruth convert bool to int
@@ -122,6 +134,9 @@ public class DatabaseManager extends Application{
         }
         public void setTruth(Boolean truth) {
             this.truth = truth;
+        }
+        public int getRank() {
+            return rank;
         }
     }
 

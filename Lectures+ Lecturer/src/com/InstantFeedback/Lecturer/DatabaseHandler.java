@@ -52,7 +52,8 @@ public class DatabaseHandler extends DatabaseManager {
         ArrayList<Lecture> list = new ArrayList<Lecture>();
         String[] projection = {
                 Lectures.COLUMN_NAME_LECTURE_ID,
-                Lectures.COLUMN_NAME_LECTURE_NAME
+                Lectures.COLUMN_NAME_LECTURE_NAME,
+                Lectures.COLUMN_NAME_LECTURE_RANK
         };
 
         Cursor cursor = db.query(
@@ -67,13 +68,15 @@ public class DatabaseHandler extends DatabaseManager {
 
         int id_index = cursor.getColumnIndex(Lectures.COLUMN_NAME_LECTURE_ID);
         int name_index = cursor.getColumnIndex(Lectures.COLUMN_NAME_LECTURE_NAME);
+        int rank_index = cursor.getColumnIndex(Lectures.COLUMN_NAME_LECTURE_RANK);
 
         cursor.moveToFirst();
         while (!cursor.isLast()) {
             int id = cursor.getInt(id_index);
             String name = cursor.getString(name_index);
+            int rank = cursor.getInt(rank_index);
 
-            Lecture lecture = new Lecture(id, name);
+            Lecture lecture = new Lecture(id, name, rank);
             list.add(lecture);
 
             cursor.moveToNext();
@@ -87,7 +90,8 @@ public class DatabaseHandler extends DatabaseManager {
         String[] projection = {
                 Questions.COLUMN_NAME_QUESTION_ID,
                 Questions.COLUMN_NAME_QUESTION_TEXT,
-                Questions.COLUMN_NAME_QUESTION_TYPE
+                Questions.COLUMN_NAME_QUESTION_TYPE,
+                Questions.COLUMN_NAME_QUESTION_RANK
         };
 
         Cursor cursor = db.query(
@@ -103,14 +107,16 @@ public class DatabaseHandler extends DatabaseManager {
         int id_index = cursor.getColumnIndex(Questions.COLUMN_NAME_QUESTION_ID);
         int text_index = cursor.getColumnIndex(Questions.COLUMN_NAME_QUESTION_TEXT);
         int type_index = cursor.getColumnIndex(Questions.COLUMN_NAME_QUESTION_TYPE);
+        int rank_index = cursor.getColumnIndex(Questions.COLUMN_NAME_QUESTION_RANK);
 
         cursor.moveToFirst();
         while(!cursor.isLast()) {
             int id = cursor.getInt(id_index);
             String text = cursor.getString(text_index);
             String type = cursor.getString(type_index);
+            int rank = cursor.getInt(rank_index);
 
-            Question question = new Question(id, text, type);
+            Question question = new Question(id, text, type, rank);
             list.add(question);
 
             cursor.moveToNext();
@@ -123,7 +129,8 @@ public class DatabaseHandler extends DatabaseManager {
         String[] projection = {
                 Answers.COLUMN_NAME_ANSWER_ID,
                 Answers.COLUMN_NAME_ANSWER_TEXT,
-                Answers.COLUMN_NAME_ANSWER_BOOL
+                Answers.COLUMN_NAME_ANSWER_BOOL,
+                Answers.COLUMN_NAME_ANSWER_RANK
         };
 
         Cursor cursor = db.query(
@@ -139,14 +146,16 @@ public class DatabaseHandler extends DatabaseManager {
         int id_index = cursor.getColumnIndex(Answers.COLUMN_NAME_ANSWER_ID);
         int text_index = cursor.getColumnIndex(Answers.COLUMN_NAME_ANSWER_TEXT);
         int bool_index = cursor.getColumnIndex(Answers.COLUMN_NAME_ANSWER_BOOL);
+        int rank_index = cursor.getColumnIndex(Answers.COLUMN_NAME_ANSWER_RANK);
 
         cursor.moveToFirst();
         while(!cursor.isLast()) {
             int id = cursor.getInt(id_index);
             String text = cursor.getString(text_index);
             int bool = cursor.getInt(bool_index);
+            int rank = cursor.getInt(rank_index);
 
-            Answer answer = new Answer(id, text, bool);
+            Answer answer = new Answer(id, text, bool, rank);
             list.add(answer);
 
             cursor.moveToNext();

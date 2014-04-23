@@ -2,8 +2,11 @@ package com.example.Lectures__Lecturer;
 
 import android.app.Application;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.example.Lectures__Lecturer.LecturerDatabaseContract.*;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -19,7 +22,7 @@ public class DatabaseManager extends Application{
     private static final String decrementRank =
             "UPDATE ? SET rank = rank - 1 WHERE rank >= ? AND ? = ?";
 
-    // gets the number of items in the given table with
+    // gets the number of items in the given table with given test_id
     private long getSize (String table_name, String id, Integer test_id) {
         String temp = "SELECT COUNT(*) FROM " + table_name + " WHERE " + id + " = " + test_id;
         long ret;
@@ -47,6 +50,27 @@ public class DatabaseManager extends Application{
         newRowId = db.insert(Courses.TABLE_NAME, null, values);
 
         return newRowId;
+    }
+
+    public ArrayList<Integer> getCourses() {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        String[] projection = {
+                Courses.COLUMN_NAME_COURSE_ID,
+                Courses.COLUMN_NAME_COURSE
+        };
+        Cursor cursor = db.query(
+                Courses.TABLE_NAME,
+                projection,
+                null, // Where columns
+                null, // Where values
+                null, // Group by
+                null, // Filter
+                null  // Sort order
+        );
+
+        cursor.moveToFirst();
+
+        return list;
     }
 
     // Insert a new lecture at a given rank in the course

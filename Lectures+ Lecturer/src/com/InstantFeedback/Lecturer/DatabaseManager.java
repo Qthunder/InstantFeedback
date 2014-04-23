@@ -2,10 +2,8 @@ package com.InstantFeedback.Lecturer;
 
 import android.app.Application;
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
-import java.util.ArrayList;
+import com.InstantFeedback.Lecturer.LecturerDatabaseContract.*;
 
 /**
  *
@@ -167,11 +165,11 @@ public class DatabaseManager extends Application{
         db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(LecturerDatabaseContract.Courses.COLUMN_NAME_COURSE, name);
-        values.put(LecturerDatabaseContract.Courses.COLUMN_NAME_LECTURER, lecturer);
+        values.put(Courses.COLUMN_NAME_COURSE, name);
+        values.put(Courses.COLUMN_NAME_LECTURER, lecturer);
 
         long newRowId;
-        newRowId = db.insert(LecturerDatabaseContract.Courses.TABLE_NAME, null, values);
+        newRowId = db.insert(Courses.TABLE_NAME, null, values);
 
         return newRowId;
     }
@@ -181,23 +179,23 @@ public class DatabaseManager extends Application{
         db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(LecturerDatabaseContract.Lectures.COLUMN_NAME_COURSE_ID, course_id);
-        values.put(LecturerDatabaseContract.Lectures.COLUMN_NAME_LECTURE_NAME, name);
-        values.put(LecturerDatabaseContract.Lectures.COLUMN_NAME_LECTURE_RANK, rank);
+        values.put(Lectures.COLUMN_NAME_COURSE_ID, course_id);
+        values.put(Lectures.COLUMN_NAME_LECTURE_NAME, name);
+        values.put(Lectures.COLUMN_NAME_LECTURE_RANK, rank);
 
-        Object[] bindArgs = new Object[]{LecturerDatabaseContract.Lectures.TABLE_NAME, LecturerDatabaseContract.Lectures.COLUMN_NAME_LECTURE_RANK,
-        LecturerDatabaseContract.Lectures.COLUMN_NAME_COURSE_ID, course_id};
+        Object[] bindArgs = new Object[]{Lectures.TABLE_NAME, Lectures.COLUMN_NAME_LECTURE_RANK,
+        Lectures.COLUMN_NAME_COURSE_ID, course_id};
         db.execSQL(incrementRank, bindArgs);
 
         long newRowId;
-        newRowId = db.insert(LecturerDatabaseContract.Lectures.TABLE_NAME, null, values);
+        newRowId = db.insert(Lectures.TABLE_NAME, null, values);
 
         return newRowId;
     }
 
     // Create a new lecture at the end of the course
     long createLecture(int course_id, String name) {
-        long temp = getSize(LecturerDatabaseContract.Lectures.TABLE_NAME, LecturerDatabaseContract.Lectures.COLUMN_NAME_COURSE_ID, course_id);
+        long temp = getSize(Lectures.TABLE_NAME, Lectures.COLUMN_NAME_COURSE_ID, course_id);
         return insertLecture(course_id, name, temp);
     }
 
@@ -206,24 +204,24 @@ public class DatabaseManager extends Application{
         db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(LecturerDatabaseContract.Questions.COLUMN_NAME_LECTURE_ID, lecture_id);
-        values.put(LecturerDatabaseContract.Questions.COLUMN_NAME_QUESTION_TEXT, text);
-        values.put(LecturerDatabaseContract.Questions.COLUMN_NAME_QUESTION_TYPE, type);
-        values.put(LecturerDatabaseContract.Questions.COLUMN_NAME_QUESTION_RANK, rank);
+        values.put(Questions.COLUMN_NAME_LECTURE_ID, lecture_id);
+        values.put(Questions.COLUMN_NAME_QUESTION_TEXT, text);
+        values.put(Questions.COLUMN_NAME_QUESTION_TYPE, type);
+        values.put(Questions.COLUMN_NAME_QUESTION_RANK, rank);
 
-        Object[] bindArgs = new Object[]{LecturerDatabaseContract.Questions.TABLE_NAME, LecturerDatabaseContract.Questions.COLUMN_NAME_QUESTION_RANK,
-        LecturerDatabaseContract.Questions.COLUMN_NAME_LECTURE_ID, lecture_id};
+        Object[] bindArgs = new Object[]{Questions.TABLE_NAME, Questions.COLUMN_NAME_QUESTION_RANK,
+        Questions.COLUMN_NAME_LECTURE_ID, lecture_id};
         db.execSQL(incrementRank, bindArgs);
 
         long newRowId;
-        newRowId = db.insert(LecturerDatabaseContract.Questions.TABLE_NAME, null, values);
+        newRowId = db.insert(Questions.TABLE_NAME, null, values);
 
         return newRowId;
     }
 
     // Create a new question to the end of the course
     long createQuestion(int lecture_id, String text, String type){
-        long temp = getSize(LecturerDatabaseContract.Questions.TABLE_NAME, LecturerDatabaseContract.Questions.COLUMN_NAME_LECTURE_ID, lecture_id);
+        long temp = getSize(Questions.TABLE_NAME, Questions.COLUMN_NAME_LECTURE_ID, lecture_id);
         return insertQuestion(lecture_id, text, type, temp);
     }
 
@@ -234,24 +232,29 @@ public class DatabaseManager extends Application{
         if (truth) truthInt = 1; else truthInt = 0;
 
         ContentValues values = new ContentValues();
-        values.put(LecturerDatabaseContract.Answers.COLUMN_NAME_QUESTION_ID, question_id);
-        values.put(LecturerDatabaseContract.Answers.COLUMN_NAME_ANSWER_TEXT, text);
-        values.put(LecturerDatabaseContract.Answers.COLUMN_NAME_ANSWER_BOOL, truthInt);
-        values.put(LecturerDatabaseContract.Answers.COLUMN_NAME_ANSWER_RANK, rank);
+        values.put(Answers.COLUMN_NAME_QUESTION_ID, question_id);
+        values.put(Answers.COLUMN_NAME_ANSWER_TEXT, text);
+        values.put(Answers.COLUMN_NAME_ANSWER_BOOL, truthInt);
+        values.put(Answers.COLUMN_NAME_ANSWER_RANK, rank);
 
-        Object[] bindArgs = new Object[]{LecturerDatabaseContract.Answers.TABLE_NAME, LecturerDatabaseContract.Answers.COLUMN_NAME_ANSWER_RANK,
-        LecturerDatabaseContract.Answers.COLUMN_NAME_QUESTION_ID, question_id};
+        Object[] bindArgs = new Object[]{Answers.TABLE_NAME, Answers.COLUMN_NAME_ANSWER_RANK,
+        Answers.COLUMN_NAME_QUESTION_ID, question_id};
         db.execSQL(incrementRank, bindArgs);
 
         long newRowId;
-        newRowId = db.insert(LecturerDatabaseContract.Answers.TABLE_NAME, null, values);
+        newRowId = db.insert(Answers.TABLE_NAME, null, values);
 
         return newRowId;
     }
 
     // Create a new answer at the end
     long createAnswer(int question_id, String text, Boolean truth) {
-        long temp = getSize(LecturerDatabaseContract.Answers.TABLE_NAME, LecturerDatabaseContract.Answers.COLUMN_NAME_QUESTION_ID, question_id);
+        long temp = getSize(Answers.TABLE_NAME, Answers.COLUMN_NAME_QUESTION_ID, question_id);
         return insertAnswer(question_id, text, truth, temp);
+    }
+
+    int deleteAnswer(int answer_id) {
+        String where = Answers.COLUMN_NAME_QUESTION_ID + " = ";
+        return db.delete(Answers.TABLE_NAME, where, new String[]{String.valueOf(answer_id)});
     }
 }

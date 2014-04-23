@@ -11,7 +11,7 @@ import com.InstantFeedback.Lecturer.LecturerDatabaseContract.*;
  * Created by edisach on 15/04/14.
  */
 public class DatabaseManager extends Application{
-    private DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
+    protected DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
     SQLiteDatabase db;
 
     class Course {
@@ -145,8 +145,11 @@ public class DatabaseManager extends Application{
     private static final String decrementRank =
             "UPDATE ? SET rank = rank - 1 WHERE rank >= ? AND ? = ?";
 
+    // TODO -- make sure all deletion methods update rank correctly
+
     // gets the number of items in the given table with given test_id
     private long getSize (String table_name, String id, int test_id) {
+        db = dbHelper.getWritableDatabase();
         String temp = "SELECT COUNT(*) FROM " + table_name + " WHERE " + id + " = " + test_id;
         long ret;
         try {
@@ -178,6 +181,7 @@ public class DatabaseManager extends Application{
     // Deletes a course and all of its lectures etc
     // returns {courses, lectures, questions, answers}
     int[] deleteCourse(int course_id) {
+        db = dbHelper.getWritableDatabase();
         int courses;
         int lectures = 0;
         int questions = 0;
@@ -239,6 +243,7 @@ public class DatabaseManager extends Application{
     // Deletes a lecture and all of its questions
     // Returns an array of length 3, {number lectures, number questions, number answers}
     int[] deleteLecture(int lecture_id) {
+        db = dbHelper.getWritableDatabase();
         int lectures;
         int questions = 0;
         int answers = 0;
@@ -300,6 +305,7 @@ public class DatabaseManager extends Application{
     // Delete the question with given id and all of its answers
     // Returns an array of length 2, first element number of questions, second number of answers deleted
     int[] deleteQuestion(int question_id) {
+        db = dbHelper.getWritableDatabase();
         String whereQuestions = Questions.COLUMN_NAME_QUESTION_ID + " = ";
         String whereAnswers = Answers.COLUMN_NAME_QUESTION_ID + " = ";
         int questions = db.delete(Questions.TABLE_NAME, whereQuestions, new String[]{String.valueOf(question_id)});
@@ -337,6 +343,7 @@ public class DatabaseManager extends Application{
 
     // Delete the answer with given id
     int deleteAnswer(int answer_id) {
+        db = dbHelper.getWritableDatabase();
         String where = Answers.COLUMN_NAME_ANSWER_ID + " = ";
         String[] vals = new String[]{String.valueOf(answer_id)};
         int num = db.delete(Answers.TABLE_NAME, where, vals);

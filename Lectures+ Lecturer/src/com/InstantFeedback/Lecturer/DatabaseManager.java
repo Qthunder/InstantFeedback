@@ -16,21 +16,19 @@ public class DatabaseManager extends Application{
     SQLiteDatabase db;
 
     class Course {
-        private Integer id;
+        private int id;
         private String name;
         private String lecturer;
 
-        public Course(Integer id, String name, String lecturer) {
+        public Course(int id, String name, String lecturer) {
             this.id = id;
             this.name = name;
             this.lecturer = lecturer;
         }
 
+        // TODO -- make setters update the database so courses can be edited
         public Integer getId() {
             return id;
-        }
-        public void setId(Integer id) {
-            this.id = id;
         }
         public String getName() {
             return name;
@@ -46,6 +44,102 @@ public class DatabaseManager extends Application{
         }
 
     }
+
+    class Lecture {
+        private int id;
+        private int course_id;
+        private String name;
+
+        Lecture(int id, int course_id, String name) {
+            this.id = id;
+            this.course_id = course_id;
+            this.name = name;
+        }
+
+        // TODO -- make setName update the database
+        public int getId() {
+            return id;
+        }
+        public int getCourse_id() {
+            return course_id;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    class Question {
+        private int id;
+        private int lecture_id;
+        private String text;
+        private String question_type;
+
+        Question(int id, int lecture_id, String text, String question_type) {
+            this.id = id;
+            this.lecture_id = lecture_id;
+            this.text = text;
+            this.question_type = question_type;
+        }
+
+        // TODO -- make setters update database
+        public int getId() {
+            return id;
+        }
+        public int getLecture_id() {
+            return lecture_id;
+        }
+        public String getText() {
+            return text;
+        }
+        public void setText(String text) {
+            this.text = text;
+        }
+        public String getQuestion_type() {
+            return question_type;
+        }
+        public void setQuestion_type(String question_type) {
+            this.question_type = question_type;
+        }
+    }
+
+    class Answer {
+        private int id;
+        private int question_id;
+        private String text;
+        private Boolean truth;
+
+        Answer(int id, int question_id, String text, int truth) {
+            this.id = id;
+            this.question_id = question_id;
+            this.text = text;
+            if (truth == 1) this.truth = true;
+            else this.truth = false;
+        }
+
+        // TODO -- make setters update database, setTruth convert bool to int
+        public int getId() {
+            return id;
+        }
+        public int getQuestion_id() {
+            return question_id;
+        }
+        public String getText() {
+            return text;
+        }
+        public void setText(String text) {
+            this.text = text;
+        }
+        public Boolean getTruth() {
+            return truth;
+        }
+        public void setTruth(Boolean truth) {
+            this.truth = truth;
+        }
+    }
+
     private static final String incrementRank =
             "UPDATE ? SET rank = rank + 1 WHERE rank >= ? AND ? = ?";
 

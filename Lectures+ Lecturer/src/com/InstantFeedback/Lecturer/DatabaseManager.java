@@ -145,6 +145,11 @@ public class DatabaseManager extends Application{
     private static final String decrementRank =
             "UPDATE ? SET rank = rank - 1 WHERE rank >= ? AND ? = ?";
 
+    private int getRank(String table_name, String id, int test_id) {
+        String sql = "SELECT rank FROM " + table_name + " WHERE " + id + " = " + test_id;
+        return (int) db.compileStatement(sql).simpleQueryForLong();
+    }
+
     // TODO -- make sure all deletion methods update rank correctly
 
     // gets the number of items in the given table with given test_id
@@ -224,8 +229,8 @@ public class DatabaseManager extends Application{
         values.put(Lectures.COLUMN_NAME_LECTURE_NAME, name);
         values.put(Lectures.COLUMN_NAME_LECTURE_RANK, rank);
 
-        Object[] bindArgs = new Object[]{Lectures.TABLE_NAME, Lectures.COLUMN_NAME_LECTURE_RANK,
-        Lectures.COLUMN_NAME_COURSE_ID, course_id};
+        Object[] bindArgs = new Object[]{Lectures.TABLE_NAME, rank,
+            Lectures.COLUMN_NAME_COURSE_ID, course_id};
         db.execSQL(incrementRank, bindArgs);
 
         long newRowId;
@@ -286,8 +291,8 @@ public class DatabaseManager extends Application{
         values.put(Questions.COLUMN_NAME_QUESTION_TYPE, type);
         values.put(Questions.COLUMN_NAME_QUESTION_RANK, rank);
 
-        Object[] bindArgs = new Object[]{Questions.TABLE_NAME, Questions.COLUMN_NAME_QUESTION_RANK,
-        Questions.COLUMN_NAME_LECTURE_ID, lecture_id};
+        Object[] bindArgs = new Object[]{Questions.TABLE_NAME, rank,
+            Questions.COLUMN_NAME_LECTURE_ID, lecture_id};
         db.execSQL(incrementRank, bindArgs);
 
         long newRowId;
@@ -325,8 +330,8 @@ public class DatabaseManager extends Application{
         values.put(Answers.COLUMN_NAME_ANSWER_BOOL, truthInt);
         values.put(Answers.COLUMN_NAME_ANSWER_RANK, rank);
 
-        Object[] bindArgs = new Object[]{Answers.TABLE_NAME, Answers.COLUMN_NAME_ANSWER_RANK,
-        Answers.COLUMN_NAME_QUESTION_ID, question_id};
+        Object[] bindArgs = new Object[]{Answers.TABLE_NAME, rank,
+            Answers.COLUMN_NAME_QUESTION_ID, question_id};
         db.execSQL(incrementRank, bindArgs);
 
         long newRowId;

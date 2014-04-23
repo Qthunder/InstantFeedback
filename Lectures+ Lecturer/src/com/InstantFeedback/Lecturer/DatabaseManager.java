@@ -47,21 +47,16 @@ public class DatabaseManager extends Application{
 
     class Lecture {
         private int id;
-        private int course_id;
         private String name;
 
-        Lecture(int id, int course_id, String name) {
+        Lecture(int id, String name) {
             this.id = id;
-            this.course_id = course_id;
             this.name = name;
         }
 
         // TODO -- make setName update the database
         public int getId() {
             return id;
-        }
-        public int getCourse_id() {
-            return course_id;
         }
         public String getName() {
             return name;
@@ -73,13 +68,11 @@ public class DatabaseManager extends Application{
 
     class Question {
         private int id;
-        private int lecture_id;
         private String text;
         private String question_type;
 
-        Question(int id, int lecture_id, String text, String question_type) {
+        Question(int id, String text, String question_type) {
             this.id = id;
-            this.lecture_id = lecture_id;
             this.text = text;
             this.question_type = question_type;
         }
@@ -87,9 +80,6 @@ public class DatabaseManager extends Application{
         // TODO -- make setters update database
         public int getId() {
             return id;
-        }
-        public int getLecture_id() {
-            return lecture_id;
         }
         public String getText() {
             return text;
@@ -107,13 +97,11 @@ public class DatabaseManager extends Application{
 
     class Answer {
         private int id;
-        private int question_id;
         private String text;
         private Boolean truth;
 
-        Answer(int id, int question_id, String text, int truth) {
+        Answer(int id, String text, int truth) {
             this.id = id;
-            this.question_id = question_id;
             this.text = text;
             if (truth == 1) this.truth = true;
             else this.truth = false;
@@ -122,9 +110,6 @@ public class DatabaseManager extends Application{
         // TODO -- make setters update database, setTruth convert bool to int
         public int getId() {
             return id;
-        }
-        public int getQuestion_id() {
-            return question_id;
         }
         public String getText() {
             return text;

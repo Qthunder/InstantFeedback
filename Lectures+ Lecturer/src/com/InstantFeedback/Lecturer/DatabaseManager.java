@@ -2,6 +2,7 @@ package com.InstantFeedback.Lecturer;
 
 import android.app.Application;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import com.InstantFeedback.Lecturer.LecturerDatabaseContract.*;
 
@@ -174,6 +175,42 @@ public class DatabaseManager extends Application{
         return newRowId;
     }
 
+    // Deletes a course and all of its lectures etc
+    // returns {courses, lectures, questions, answers}
+    int[] deleteCourse(int course_id) {
+        int courses;
+        int lectures = 0;
+        int questions = 0;
+        int answers = 0;
+        String[] projection = {Lectures.COLUMN_NAME_LECTURE_ID};
+
+        Cursor cursor = db.query(
+                Lectures.TABLE_NAME,
+                projection,
+                Lectures.COLUMN_NAME_COURSE_ID,
+                new String[]{String.valueOf(course_id)},
+                null,
+                null,
+                null
+        );
+
+        int id_index = cursor.getColumnIndex(Lectures.COLUMN_NAME_LECTURE_ID);
+        cursor.moveToFirst();
+        while (!cursor.isLast()) {
+            int id = cursor.getInt(id_index);
+            int[] nums = deleteLecture(id);
+            lectures += nums[0];
+            questions += nums[1];
+            answers += nums[2];
+            cursor.moveToNext();
+        }
+        String where = Courses.COLUMN_NAME_COURSE_ID + " = ";
+        String[] vals = new String[]{String.valueOf(course_id)};
+        courses = db.delete(Courses.TABLE_NAME, where, vals);
+
+        return new int[]{courses, lectures, questions, answers};
+    }
+
     // Insert a new lecture at a given rank in the course
     long insertLecture(int course_id, String name, long rank) {
         db = dbHelper.getWritableDatabase();
@@ -197,6 +234,41 @@ public class DatabaseManager extends Application{
     long createLecture(int course_id, String name) {
         long temp = getSize(Lectures.TABLE_NAME, Lectures.COLUMN_NAME_COURSE_ID, course_id);
         return insertLecture(course_id, name, temp);
+    }
+
+    // Deletes a lecture and all of its questions
+    // Returns an array of length 3, {number lectures, number questions, number answers}
+    int[] deleteLecture(int lecture_id) {
+        int lectures;
+        int questions = 0;
+        int answers = 0;
+
+        String[] projection = {Questions.COLUMN_NAME_QUESTION_ID};
+
+        Cursor cursor = db.query(
+                Questions.TABLE_NAME,
+                projection,
+                Questions.COLUMN_NAME_LECTURE_ID,
+                new String[]{String.valueOf(lecture_id)},
+                null,
+                null,
+                null
+        );
+
+        int id_index = cursor.getColumnIndex(Questions.COLUMN_NAME_QUESTION_ID);
+        cursor.moveToFirst();
+        while (!cursor.isLast()) {
+            int id = cursor.getInt(id_index);
+            int[] nums = deleteQuestion(id);
+            questions += nums[0];
+            answers += nums[1];
+            cursor.moveToNext();
+        }
+        String where = Lectures.COLUMN_NAME_LECTURE_ID + " = ";
+        String[] vals = new String[]{String.valueOf(lecture_id)};
+        lectures = db.delete(Lectures.TABLE_NAME, where, vals);
+
+        return new int[]{lectures, questions, answers};
     }
 
     // Insert a new question at a given rank in the lecture
@@ -223,6 +295,16 @@ public class DatabaseManager extends Application{
     long createQuestion(int lecture_id, String text, String type){
         long temp = getSize(Questions.TABLE_NAME, Questions.COLUMN_NAME_LECTURE_ID, lecture_id);
         return insertQuestion(lecture_id, text, type, temp);
+    }
+
+    // Delete the question with given id and all of its answers
+    // Returns an array of length 2, first element number of questions, second number of answers deleted
+    int[] deleteQuestion(int question_id) {
+        String whereQuestions = Questions.COLUMN_NAME_QUESTION_ID + " = ";
+        String whereAnswers = Answers.COLUMN_NAME_QUESTION_ID + " = ";
+        int questions = db.delete(Questions.TABLE_NAME, whereQuestions, new String[]{String.valueOf(question_id)});
+        int answers = db.delete(Answers.TABLE_NAME, whereAnswers, new String[]{String.valueOf(question_id)});
+        return new int[]{questions, answers};
     }
 
     // Insert a new answer to a question at a given rank
@@ -253,8 +335,11 @@ public class DatabaseManager extends Application{
         return insertAnswer(question_id, text, truth, temp);
     }
 
+    // Delete the answer with given id
     int deleteAnswer(int answer_id) {
-        String where = Answers.COLUMN_NAME_QUESTION_ID + " = ";
-        return db.delete(Answers.TABLE_NAME, where, new String[]{String.valueOf(answer_id)});
+        String where = Answers.COLUMN_NAME_ANSWER_ID + " = ";
+        String[] vals = new String[]{String.valueOf(answer_id)};
+        int num = db.delete(Answers.TABLE_NAME, where, vals);
+        return num;
     }
 }

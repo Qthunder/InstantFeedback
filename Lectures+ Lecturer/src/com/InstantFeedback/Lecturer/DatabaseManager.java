@@ -16,6 +16,34 @@ public class DatabaseManager extends Application{
     SQLiteDatabase db;
 
     class Course {
+        private Integer id;
+        private String name;
+        private String lecturer;
+
+        public Course(Integer id, String name, String lecturer) {
+            this.id = id;
+            this.name = name;
+            this.lecturer = lecturer;
+        }
+
+        public Integer getId() {
+            return id;
+        }
+        public void setId(Integer id) {
+            this.id = id;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        public String getLecturer() {
+            return lecturer;
+        }
+        public void setLecturer(String lecturer) {
+            this.lecturer = lecturer;
+        }
 
     }
     private static final String incrementRank =
@@ -25,7 +53,7 @@ public class DatabaseManager extends Application{
             "UPDATE ? SET rank = rank - 1 WHERE rank >= ? AND ? = ?";
 
     // gets the number of items in the given table with given test_id
-    private long getSize (String table_name, String id, Integer test_id) {
+    private long getSize (String table_name, String id, int test_id) {
         String temp = "SELECT COUNT(*) FROM " + table_name + " WHERE " + id + " = " + test_id;
         long ret;
         try {
@@ -55,7 +83,7 @@ public class DatabaseManager extends Application{
     }
 
     // Insert a new lecture at a given rank in the course
-    long insertLecture(Integer course_id, String name, long rank) {
+    long insertLecture(int course_id, String name, long rank) {
         db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -74,13 +102,13 @@ public class DatabaseManager extends Application{
     }
 
     // Create a new lecture at the end of the course
-    long createLecture(Integer course_id, String name) {
+    long createLecture(int course_id, String name) {
         long temp = getSize(LecturerDatabaseContract.Lectures.TABLE_NAME, LecturerDatabaseContract.Lectures.COLUMN_NAME_COURSE_ID, course_id);
         return insertLecture(course_id, name, temp);
     }
 
     // Insert a new question at a given rank in the lecture
-    long insertQuestion(Integer lecture_id, String text, String type, long rank){
+    long insertQuestion(int lecture_id, String text, String type, long rank){
         db = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -100,15 +128,15 @@ public class DatabaseManager extends Application{
     }
 
     // Create a new question to the end of the course
-    long createQuestion(Integer lecture_id, String text, String type){
+    long createQuestion(int lecture_id, String text, String type){
         long temp = getSize(LecturerDatabaseContract.Questions.TABLE_NAME, LecturerDatabaseContract.Questions.COLUMN_NAME_LECTURE_ID, lecture_id);
         return insertQuestion(lecture_id, text, type, temp);
     }
 
     // Insert a new answer to a question at a given rank
-    long insertAnswer(Integer question_id, String text, Boolean truth, long rank){
+    long insertAnswer(int question_id, String text, Boolean truth, long rank){
         db = dbHelper.getWritableDatabase();
-        Integer truthInt;
+        int truthInt;
         if (truth) truthInt = 1; else truthInt = 0;
 
         ContentValues values = new ContentValues();
@@ -128,7 +156,7 @@ public class DatabaseManager extends Application{
     }
 
     // Create a new answer at the end
-    long createAnswer(Integer question_id, String text, Boolean truth) {
+    long createAnswer(int question_id, String text, Boolean truth) {
         long temp = getSize(LecturerDatabaseContract.Answers.TABLE_NAME, LecturerDatabaseContract.Answers.COLUMN_NAME_QUESTION_ID, question_id);
         return insertAnswer(question_id, text, truth, temp);
     }

@@ -11,7 +11,7 @@ import com.InstantFeedback.Lecturer.LecturerDatabaseContract.*;
  * Created by edisach on 15/04/14.
  */
 public class DatabaseManager extends Application{
-    private DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
+    protected DatabaseHelper dbHelper = new DatabaseHelper(getApplicationContext());
     SQLiteDatabase db;
 
     class Course {
@@ -145,8 +145,23 @@ public class DatabaseManager extends Application{
     private static final String decrementRank =
             "UPDATE ? SET rank = rank - 1 WHERE rank >= ? AND ? = ?";
 
+    private int getRank(String table_name, String id, int test_id) {
+        db = dbHelper.getWritableDatabase();
+        String sql = "SELECT rank FROM " + table_name + " WHERE " + id + " = " + test_id;
+        return (int) db.compileStatement(sql).simpleQueryForLong();
+    }
+
+    private int getId(String table_name, String parent_id, String self_id, int test_id) {
+        db = dbHelper.getWritableDatabase();
+        String sql = "SELECT " + parent_id + " FROM " + table_name + " WHERE " + self_id + " = " + test_id;
+        return (int) db.compileStatement(sql).simpleQueryForLong();
+    }
+
+    // TODO -- make sure all deletion methods update rank correctly
+
     // gets the number of items in the given table with given test_id
     private long getSize (String table_name, String id, int test_id) {
+        db = dbHelper.getWritableDatabase();
         String temp = "SELECT COUNT(*) FROM " + table_name + " WHERE " + id + " = " + test_id;
         long ret;
         try {
@@ -178,6 +193,7 @@ public class DatabaseManager extends Application{
     // Deletes a course and all of its lectures etc
     // returns {courses, lectures, questions, answers}
     int[] deleteCourse(int course_id) {
+        db = dbHelper.getWritableDatabase();
         int courses;
         int lectures = 0;
         int questions = 0;
@@ -220,8 +236,8 @@ public class DatabaseManager extends Application{
         values.put(Lectures.COLUMN_NAME_LECTURE_NAME, name);
         values.put(Lectures.COLUMN_NAME_LECTURE_RANK, rank);
 
-        Object[] bindArgs = new Object[]{Lectures.TABLE_NAME, Lectures.COLUMN_NAME_LECTURE_RANK,
-        Lectures.COLUMN_NAME_COURSE_ID, course_id};
+        Object[] bindArgs = new Object[]{Lectures.TABLE_NAME, rank,
+            Lectures.COLUMN_NAME_COURSE_ID, course_id};
         db.execSQL(incrementRank, bindArgs);
 
         long newRowId;
@@ -239,6 +255,7 @@ public class DatabaseManager extends Application{
     // Deletes a lecture and all of its questions
     // Returns an array of length 3, {number lectures, number questions, number answers}
     int[] deleteLecture(int lecture_id) {
+        db = dbHelper.getWritableDatabase();
         int lectures;
         int questions = 0;
         int answers = 0;
@@ -264,6 +281,13 @@ public class DatabaseManager extends Application{
             answers += nums[1];
             cursor.moveToNext();
         }
+
+        int rank = getRank(Lectures.TABLE_NAME, Lectures.COLUMN_NAME_LECTURE_ID, lecture_id);
+        int id = getId(Lectures.TABLE_NAME, Lectures.COLUMN_NAME_COURSE_ID,
+                Lectures.COLUMN_NAME_LECTURE_ID, lecture_id);
+        Object[] bindArgs = {Lectures.TABLE_NAME, rank, Lectures.COLUMN_NAME_COURSE_ID, id};
+        db.execSQL(decrementRank, bindArgs);
+
         String where = Lectures.COLUMN_NAME_LECTURE_ID + " = ";
         String[] vals = new String[]{String.valueOf(lecture_id)};
         lectures = db.delete(Lectures.TABLE_NAME, where, vals);
@@ -281,8 +305,8 @@ public class DatabaseManager extends Application{
         values.put(Questions.COLUMN_NAME_QUESTION_TYPE, type);
         values.put(Questions.COLUMN_NAME_QUESTION_RANK, rank);
 
-        Object[] bindArgs = new Object[]{Questions.TABLE_NAME, Questions.COLUMN_NAME_QUESTION_RANK,
-        Questions.COLUMN_NAME_LECTURE_ID, lecture_id};
+        Object[] bindArgs = new Object[]{Questions.TABLE_NAME, rank,
+            Questions.COLUMN_NAME_LECTURE_ID, lecture_id};
         db.execSQL(incrementRank, bindArgs);
 
         long newRowId;
@@ -300,6 +324,14 @@ public class DatabaseManager extends Application{
     // Delete the question with given id and all of its answers
     // Returns an array of length 2, first element number of questions, second number of answers deleted
     int[] deleteQuestion(int question_id) {
+        db = dbHelper.getWritableDatabase();
+
+        int rank = getRank(Questions.TABLE_NAME, Questions.COLUMN_NAME_QUESTION_ID, question_id);
+        int id = getId(Questions.TABLE_NAME, Questions.COLUMN_NAME_LECTURE_ID,
+                Questions.COLUMN_NAME_QUESTION_ID, question_id);
+        Object[] bindArgs = {Questions.TABLE_NAME, rank, Questions.COLUMN_NAME_LECTURE_ID, id};
+        db.execSQL(decrementRank, bindArgs);
+
         String whereQuestions = Questions.COLUMN_NAME_QUESTION_ID + " = ";
         String whereAnswers = Answers.COLUMN_NAME_QUESTION_ID + " = ";
         int questions = db.delete(Questions.TABLE_NAME, whereQuestions, new String[]{String.valueOf(question_id)});
@@ -319,8 +351,8 @@ public class DatabaseManager extends Application{
         values.put(Answers.COLUMN_NAME_ANSWER_BOOL, truthInt);
         values.put(Answers.COLUMN_NAME_ANSWER_RANK, rank);
 
-        Object[] bindArgs = new Object[]{Answers.TABLE_NAME, Answers.COLUMN_NAME_ANSWER_RANK,
-        Answers.COLUMN_NAME_QUESTION_ID, question_id};
+        Object[] bindArgs = new Object[]{Answers.TABLE_NAME, rank,
+            Answers.COLUMN_NAME_QUESTION_ID, question_id};
         db.execSQL(incrementRank, bindArgs);
 
         long newRowId;
@@ -337,6 +369,14 @@ public class DatabaseManager extends Application{
 
     // Delete the answer with given id
     int deleteAnswer(int answer_id) {
+        db = dbHelper.getWritableDatabase();
+
+        int rank = getRank(Answers.TABLE_NAME, Answers.COLUMN_NAME_ANSWER_ID, answer_id);
+        int id = getId(Answers.TABLE_NAME, Answers.COLUMN_NAME_QUESTION_ID,
+                Answers.COLUMN_NAME_ANSWER_ID, answer_id);
+        Object[] bindArgs = {Answers.TABLE_NAME, rank, Answers.COLUMN_NAME_ANSWER_ID, answer_id};
+        db.execSQL(decrementRank, bindArgs);
+
         String where = Answers.COLUMN_NAME_ANSWER_ID + " = ";
         String[] vals = new String[]{String.valueOf(answer_id)};
         int num = db.delete(Answers.TABLE_NAME, where, vals);

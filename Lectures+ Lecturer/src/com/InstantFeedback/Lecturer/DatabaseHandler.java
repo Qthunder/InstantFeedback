@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class DatabaseHandler extends DatabaseManager {
 
     public ArrayList<Course> getCourses() {
+        db = dbHelper.getWritableDatabase();
         ArrayList<Course> list = new ArrayList<Course>();
         String[] projection = {
                 Courses.COLUMN_NAME_COURSE_ID,
@@ -49,6 +50,7 @@ public class DatabaseHandler extends DatabaseManager {
     }
 
     public ArrayList<Lecture> getLectures(int course_id) {
+        db = dbHelper.getWritableDatabase();
         ArrayList<Lecture> list = new ArrayList<Lecture>();
         String[] projection = {
                 Lectures.COLUMN_NAME_LECTURE_ID,
@@ -86,6 +88,7 @@ public class DatabaseHandler extends DatabaseManager {
     }
 
     public ArrayList<Question> getQuestions(int lecture_id) {
+        db = dbHelper.getWritableDatabase();
         ArrayList<Question> list = new ArrayList<Question>();
         String[] projection = {
                 Questions.COLUMN_NAME_QUESTION_ID,
@@ -125,6 +128,7 @@ public class DatabaseHandler extends DatabaseManager {
     }
 
     public ArrayList<Answer> getAnswers(int question_id) {
+        db = dbHelper.getWritableDatabase();
         ArrayList<Answer> list = new ArrayList<Answer>();
         String[] projection = {
                 Answers.COLUMN_NAME_ANSWER_ID,

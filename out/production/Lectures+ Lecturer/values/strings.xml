@@ -4,7 +4,8 @@
     <string name="button_prepare">Prepare</string>
     <string name="button_present">Present</string>
     <string name="button_history">History</string>
-    <string name="text_name">Name:</string>
-    <string name="text_password">Password:</string>
-    <string name="button_signin">Sign in</string>
+    <string name="dialog_submit">Submit</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_prompt">Enter your name as you would like your students to see it:</string>
+    <string name="button_rename">Edit saved name</string>
 </resources>

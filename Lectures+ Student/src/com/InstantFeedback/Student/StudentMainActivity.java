@@ -1,11 +1,11 @@
 package com.InstantFeedback.Student;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
 public class StudentMainActivity extends Activity implements AdapterView.OnItemSelectedListener {
@@ -40,7 +40,11 @@ public class StudentMainActivity extends Activity implements AdapterView.OnItemS
     }
 
     // called when button is pressed
-    public void connect(){
+    public void connect(View view){
+        // establish connection (to be implemented)
 
+        Intent intent = new Intent(this, StudentLectureActivity.class);
+        intent.putExtra("com.InstantFeedback.Student.SelectedLecturer" , selectedLecturer);
+        startActivity(intent);
     }
 }

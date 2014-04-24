@@ -13,5 +13,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".StudentLectureActivity"
+                  android:label="Lecture Screen"
+                  android:parentActivityName="com.InstantFeedback.Student.StudentMainActivity"
+                  android:theme="@android:style/Theme.Holo.NoActionBar">
+        </activity>
     </application>
 </manifest>

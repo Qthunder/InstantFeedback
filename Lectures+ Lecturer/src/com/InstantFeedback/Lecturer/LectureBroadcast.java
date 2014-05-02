@@ -1,8 +1,13 @@
 package com.InstantFeedback.Lecturer;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import com.InstantFeedback.Library.Answer;
 import com.InstantFeedback.Library.Question;
 import com.InstantFeedback.Library.Request;
+import com.InstantFeedback.Library.Variables;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -18,6 +23,7 @@ import static com.InstantFeedback.Library.Variables.DataType;
 public class LectureBroadcast {
     private static final String TAG = "LectureBroadcast";
     private final Thread serverThread;
+    private final Handler updateHandler;
     private int port = -1;
     private ServerSocket serverSocket;
     private List<Socket> attenders = new ArrayList<Socket>();
@@ -26,9 +32,10 @@ public class LectureBroadcast {
         return port;
     }
 
-    public LectureBroadcast() {
+    public LectureBroadcast(Handler handler) {
         serverThread = new Thread(new ServerThread());
         serverThread.run();
+        updateHandler = handler;
     }
 
     public void endBroadcast() {
@@ -39,7 +46,7 @@ public class LectureBroadcast {
     public void deployQuestion(Question question) {
         for(int i = 0; i < attenders.size(); ++i) sendQuestion(attenders.get(i), question);
 
-        //TODO - start collection question responses
+        //TODO - start collecting question responses
     }
 
     private void sendQuestion(Socket socket, Question question) {
@@ -79,7 +86,7 @@ public class LectureBroadcast {
                     thread.run();
                     attenderThreads.add(thread);
 
-                    //TODO notify app of student joining
+                    updateHandler.obtainMessage(Variables.STUDENT_JOINED);
                 }
 
             } catch (IOException e) {
@@ -106,13 +113,29 @@ public class LectureBroadcast {
                 while(!Thread.currentThread().isInterrupted()) {
                     DataType dataType = (DataType) input.readObject();
 
+                    Bundle messageBundle;
+                    Message message;
+
                     switch(dataType) {
                         case REQUEST:
                             Request request = (Request) input.readObject();
-                            //TODO - inform rest of the app about request.
+                            messageBundle = new Bundle();
+                            messageBundle.putString("type", "request");
+                            messageBundle.putString("request", request.getRequest()); //TODO send rest of request when implemented
+                            message = Message.obtain();
+                            message.setData(messageBundle);
+                            updateHandler.sendMessage(message);
                             break;
                         case ANSWER:
-                            //TODO - handle the answer
+                            Answer answer = (Answer) input.readObject();
+                            messageBundle = new Bundle();
+                            messageBundle.putString("type", "answer");
+                            //TODO send Answer when implemented
+                            message = Message.obtain();
+                            message.setData(messageBundle);
+                            updateHandler.sendMessage(message);
+
+                            break;
                         default:
                             Log.d(TAG, "Wrong DataType sent");
                     }

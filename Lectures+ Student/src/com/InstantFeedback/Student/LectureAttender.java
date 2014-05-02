@@ -1,6 +1,10 @@
 package com.InstantFeedback.Student;
 
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
+import com.InstantFeedback.Library.Answer;
 import com.InstantFeedback.Library.Variables.DataType;
 import com.InstantFeedback.Library.Question;
 import com.InstantFeedback.Library.Request;
@@ -17,11 +21,13 @@ public class LectureAttender {
     private static final String TAG = "Lecture Attender";
     private final InetAddress serverAddress;
     private final int serverPort;
+    private final Handler updateHandler;
     private Thread requestsThread;
     private Thread questionsThread;
     private Socket clientSocket;
 
-    public LectureAttender(InetAddress address, int port) {
+    public LectureAttender(InetAddress address, int port, Handler handler) {
+        updateHandler = handler;
         serverAddress = address;
         serverPort = port;
 
@@ -108,7 +114,13 @@ public class LectureAttender {
                     DataType dataType = (DataType) input.readObject();
                     if(dataType == DataType.QUESTION) {
                         Question question = (Question) input.readObject();
-                        //TODO deployQuestion(question) - inform the rest of the app about the question.
+
+                        Bundle messageBundle = new Bundle();
+                        messageBundle.putString("type", "question");
+                        messageBundle.putString("question", question.getQuestion()); //TODO send rest of question when it gets implemented
+                        Message message = Message.obtain();
+                        message.setData(messageBundle);
+                        updateHandler.sendMessage(message);
                     }
                 }
 
@@ -120,7 +132,25 @@ public class LectureAttender {
         }
     }
 
-    public void answerQuestion(Question question /*, Answer answer*/) {
-        //TODO
+    public void answerQuestion(Answer answer) {
+        try {
+            Socket socket = clientSocket;
+            if (socket == null) {
+                Log.d(TAG, "Socket is null");
+            } else if (socket.getOutputStream() == null) {
+                Log.d(TAG, "Socket output stream is null");
+            }
+
+            ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+            out.writeObject(DataType.ANSWER);
+            out.writeObject(answer);
+
+            Log.d(TAG, "Student answer sent");
+
+        } catch (IOException e) {
+            Log.e(TAG, "Answer sending failed, IOE", e);
+        }
+
     }
+
 }

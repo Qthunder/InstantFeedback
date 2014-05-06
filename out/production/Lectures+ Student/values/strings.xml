@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">Lectures+ Student</string>
-    <string name="button_prompt">"Connect"</string>
-    <string name="spinner_prompt">Select a connected lecturer:</string>
-    <string name="question_mark">"?"</string>
-</resources>

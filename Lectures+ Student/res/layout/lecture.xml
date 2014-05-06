@@ -1,55 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
+    <CheckBox
+            android:id="@+id/CB0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView"
-            android:layout_gravity="center_horizontal" android:textSize="15sp"/>
-    <ScrollView
-            android:layout_width="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="140dp"
+            android:text="@string/answer_a" />
+
+    <CheckBox
+            android:id="@+id/CB1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/scrollView">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView2"/>
-    </ScrollView>
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="bottom">
-        <TableRow
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:background="#202529">
-            <ImageButton
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/imageButton"
-                    android:src="@drawable/volume"
-                    android:scaleType="fitCenter" android:background="@android:color/transparent"
-                    android:padding="12dp"/>
-            <Button
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:text="@string/question_mark"
-                    android:id="@+id/button"
-                    android:textStyle="bold"
-                    android:textSize="30sp" android:background="@android:color/transparent"/>
-            <ImageButton
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/imageButton2"
-                    android:src="@drawable/slower"
-                    android:scaleType="fitCenter" android:background="@android:color/transparent"
-                    android:padding="10dp"/>
-        </TableRow>
-    </LinearLayout>
-</LinearLayout>
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/CB0"
+            android:layout_marginLeft="20dp"
+            android:text="@string/answer_b" />
+
+    <CheckBox
+            android:id="@+id/CB2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/CB1"
+            android:layout_marginLeft="20dp"
+            android:text="@string/answer_c" />
+
+    <CheckBox
+            android:id="@+id/CB3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/CB2"
+            android:layout_marginLeft="20dp"
+            android:text="@string/answer_d" />
+
+    <TextView
+            android:id="@+id/Answer0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/CB0"
+            android:layout_alignBottom="@+id/CB0"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="Placeholder0" />
+
+    <TextView
+            android:id="@+id/Answer1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/CB1"
+            android:layout_alignBottom="@+id/CB1"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="Placeholder1" />
+
+    <TextView
+            android:id="@+id/Answer2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/CB2"
+            android:layout_alignBottom="@+id/CB2"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="Placeholder2" />
+
+    <TextView
+            android:id="@+id/Answer3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/CB3"
+            android:layout_alignBottom="@+id/CB3"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:text="Placeholder3" />
+
+    <TextView
+            android:id="@+id/UserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:text="Gaby" />
+
+    <TextView
+            android:id="@+id/Question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/UserName"
+            android:layout_centerHorizontal="true"
+            android:text="QuestionPlaceHolder" />
+
+    <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/CB3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="70dp"
+            android:onClick="sendAnswer"
+            android:text="@string/answer_button" />
+
+    <Button
+            android:id="@+id/button_ask"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/Question"
+            android:layout_marginBottom="30dp"
+            android:onClick="putQuestion"
+            android:text="@string/putQuestion" />
+
+    <Button
+            android:id="@+id/button_faster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="goFaster"
+            android:textColor="#00FF00"
+
+            android:text="@string/faster_button"
+            android:layout_alignTop="@+id/button_ask"
+            android:layout_toRightOf="@+id/button_ask"/>
+
+    <Button
+            android:id="@+id/button_slower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/button_ask"
+            android:layout_alignBottom="@+id/button_ask"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/button_ask"
+            android:textColor="#FF0000"
+            android:onClick="goSlower"
+            android:text="@string/slower_button" />
+</RelativeLayout>
